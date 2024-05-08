@@ -55,8 +55,21 @@ def btn_click(button):
         moves += 1
         game_over = check_for_win()
         current_player = PLAYER_O if current_player == PLAYER_X else PLAYER_X
-    elif game_over:
-        tkinter.messagebox.showinfo("Tic-Tac-Toe", "Game Over! Please restart.")
+
+def get_move():
+    global game_over
+    row = col = -1
+    while row not in [0, 1, 2, 3] or col not in [0, 1, 2, 3]:
+        row = int(input("Enter row (0, 1, or 2) or enter 3 to quit: "))
+        if row == 3:
+            tk.destroy()
+            return
+        col = int(input("Enter column (0, 1, or 2) or enter 3 to quit: "))
+        if col == 3:
+            tk.destroy()
+            return
+    if buttons[row * 3 + col]["text"] == " ":
+        buttons[row * 3 + col].invoke()
 
 # Create buttons
 buttons = []
@@ -67,4 +80,8 @@ for row in range(3):
         button.config(command=lambda btn=button: btn_click(btn))
         buttons.append(button)
 
-tk.mainloop()
+# Start game loop
+while True:
+    get_move()
+    if game_over:
+        break
